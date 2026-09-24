@@ -45,12 +45,17 @@ public class PaymentCommandHandler {
         }
         catch (CreditCardProcessorUnavailableException e)
         {
-           log.error(e.getMessage());
+           log.error("Credit Card service not available: "+e.getMessage());
            PaymentFailedEvent paymentFailedEvent = PaymentFailedEvent.builder()
                     .orderId(command.getOrderId())
                     .productId(command.getProductId())
                     .productQuantity(command.getProductQuantity())
                     .build();
+           kafkaTemplate.send(paymentEventsTopicName,paymentFailedEvent);
+        }
+        catch (Exception e) {
+
+            log.error("ACTUAL EXCEPTION: {}", e.getClass().getName(), e);
         }
     }
 

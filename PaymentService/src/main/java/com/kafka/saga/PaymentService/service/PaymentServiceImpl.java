@@ -18,13 +18,13 @@ import java.util.stream.Collectors;
 public class PaymentServiceImpl implements PaymentService {
     public static final String SAMPLE_CREDIT_CARD_NUMBER = "374245455400126";
     private final PaymentRepository paymentRepository;
-   // private final CreditCardProcessorRemoteService ccpRemoteService;
+    private final CreditCardProcessorRemoteService ccpRemoteService;
 
     @Override
     public Payment process(Payment payment) {
         BigDecimal totalPrice = payment.getProductPrice()
                 .multiply(new BigDecimal(payment.getProductQuantity()));
-  //      ccpRemoteService.process(new BigInteger(SAMPLE_CREDIT_CARD_NUMBER), totalPrice);
+        ccpRemoteService.process(new BigInteger(SAMPLE_CREDIT_CARD_NUMBER), totalPrice);
         PaymentEntity paymentEntity = PaymentEntity
                 .builder()
                 .orderId(payment.getOrderId())
